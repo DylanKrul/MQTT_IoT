@@ -1,6 +1,6 @@
 //
 // This is a minimal example on MQTT publish and subscribe
-// from an ESP8266 board to an MQTT broker (I have used local Mosquitto running on a Raspberry Pi)
+// from an ESP8266 board to an MQTT broker (I have used a local Mosquitto running on a Raspberry Pi)
 // This example uses the Arduino-MQTT library (https://github.com/256dpi/arduino-mqtt)
 // Install it in the Arduino IDE before compiling the sketch
 
