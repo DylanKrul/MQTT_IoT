@@ -1,11 +1,12 @@
 import paho.mqtt.client as mqtt
+import datetime
 
 def on_connect(client, userdata, rc):
     print("Connected with result code "+str(rc))
     client.subscribe("Home/#")
 
 def on_message(client, userdata, msg):
-    print(msg.topic+" "+str(msg.payload))
+    print(str(datetime.datetime.now()) + ": " + msg.topic + " " + str(msg.payload))
 
 client = mqtt.Client()
 client.on_connect = on_connect
