@@ -63,10 +63,10 @@ void loop()
     float h_indoor = dht_indoor.readHumidity();
     float t_indoor = dht_indoor.readTemperature();
 
-    publishFloatValue(h_outdoor,"Home/Garage/Outdoor/Humidity");
-    publishFloatValue(t_outdoor,"Home/Garage/Outdoor/Temperature");
-    publishFloatValue(h_indoor,"Home/Garage/Indoor/Humidity");
-    publishFloatValue(t_indoor,"Home/Garage/Indoor/Temperature");
+    publishFloatValue(h_outdoor,"Home/Outdoor/Humidity");
+    publishFloatValue(t_outdoor,"Home/Outdoor/Temperature");
+    publishFloatValue(h_indoor,"Home/Garage/Humidity");
+    publishFloatValue(t_indoor,"Home/Garage/Temperature");
   }
 }
 
