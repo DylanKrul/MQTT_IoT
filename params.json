@@ -1,0 +1,6 @@
+{
+  "name": "MQTT IoT",
+  "tagline": "A self-hosted MQTT environment for IoT sensor data from ESP8266 dev boards",
+  "body": "### A self-hosted MQTT environment for IoT sensor data from ESP8266 dev boards\r\nThis repository contains the code that I use for my IoT gadgets at home. I have a number of ESP8266 boards with sensors that publishes data via MQTT to a Raspberry Pi. The RPi stores the data in a MongoDB and forwards the data to a cloud service (Adafruit IO).\r\n\r\n![Overview](https://larsbergqvist.files.wordpress.com/2016/06/localandadafruitio.png?w=656)\r\n\r\n### Details\r\nThe setup is described in three blog posts:\r\n* https://larsbergqvist.wordpress.com/2016/06/24/a-self-hosted-mqtt-environment-for-internet-of-things-part-1/\r\n* https://larsbergqvist.wordpress.com/2016/06/24/a-self-hosted-mqtt-environment-for-internet-of-things-part-2/\r\n* https://larsbergqvist.wordpress.com/2016/06/26/a-self-hosted-mqtt-environment-for-internet-of-things-part-3/\r\n",
+  "note": "Don't delete this file! It's used internally to help with page regeneration."
+}
