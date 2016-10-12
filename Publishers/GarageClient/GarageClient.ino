@@ -3,7 +3,7 @@
 // to an MQTT broker (I have used a local Mosquitto running on a Raspberry Pi)
 // This example uses the PubSub client library (https://github.com/knolleary/pubsubclient)
 // Install it in the Arduino IDE before compiling the sketch
-// Sensor values are fetched from an indoor DHT22 sensor and outdoor DHT22 sensor
+// Sensor values are fetched from an indoor DHT22 sensor and an outdoor DHT22 sensor
 
 
 #include <ESP8266WiFi.h>
