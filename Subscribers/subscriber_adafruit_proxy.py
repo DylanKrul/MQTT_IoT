@@ -6,15 +6,16 @@ from Adafruit_IO import MQTTClient
 
 #
 # Subscribes to messages via a local MQTT broker
-# and forward them to a cloud service (Adafruit IO)
+# and forwards them to a cloud service (Adafruit IO)
 #
 
 def on_connected(client, userdata, rc):
-    print("Connected to local broker with result code "+str(rc))
+    print("Connected to local MQTT broker with result code "+str(rc))
     client.subscribe("Home/#")
 
 def on_disconnected():
-    print("Disconnected from local broker")
+    print("Disconnected from local MQTT broker")
+    client = mqtt.Client()
 
 def on_message(client, userdata, msg):
     print(str(datetime.datetime.now()) + ": " + msg.topic + " " + str(msg.payload))
@@ -23,7 +24,7 @@ def on_message(client, userdata, msg):
     print("Publish to Adafruit feedname: " + feedname)
     adafruitClient.publish(feedname,msg.payload)
 
-# Initialize the client that should connect to the local Mosquitto broker
+# Initialize the client that should connect to the local MQTT broker
 client = mqtt.Client()
 client.on_connect = on_connected
 client.on_disconnect = on_disconnected
