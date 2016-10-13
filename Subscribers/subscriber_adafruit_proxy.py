@@ -47,8 +47,8 @@ ADAFRUIT_IO_USERNAME = 'LarsBq'
 adafruitClient = MQTTClient(ADAFRUIT_IO_USERNAME, ADAFRUIT_IO_KEY)
 
 def adafruit_disconnected(client):
-    client.connect()
     print("Disconnected from Adafruit IO")
+    client.connect()
 
 def adafruit_connected(client):
     print("Connected to Adafruit IO")
