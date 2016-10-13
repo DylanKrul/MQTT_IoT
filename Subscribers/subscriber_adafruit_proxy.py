@@ -40,8 +40,8 @@ while(connOK == False):
 
 
 # Set to your Adafruit IO key and username
-ADAFRUIT_IO_KEY      = '4c9f8157459a1597a500abfb74536032a160bf0a'
-ADAFRUIT_IO_USERNAME = 'LarsBq'
+ADAFRUIT_IO_KEY      = 'XXX'
+ADAFRUIT_IO_USERNAME = 'XXX'
 
 # Initialize the client that should connect to io.adafruit.com
 adafruitClient = MQTTClient(ADAFRUIT_IO_USERNAME, ADAFRUIT_IO_KEY)
