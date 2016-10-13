@@ -3,6 +3,7 @@ import paho.mqtt.client as mqtt
 import datetime
 import time
 from Adafruit_IO import MQTTClient
+from adafruit_credentials import ADAFRUIT_IO_USERNAME, ADAFRUIT_IO_KEY
 
 #
 # Subscribes to messages via a local MQTT broker
@@ -37,11 +38,6 @@ while(connOK == False):
     except:
         connOK = False
     time.sleep(2)
-
-
-# Set to your Adafruit IO key and username
-ADAFRUIT_IO_KEY      = 'XXX'
-ADAFRUIT_IO_USERNAME = 'XXX'
 
 # Initialize the client that should connect to io.adafruit.com
 adafruitClient = MQTTClient(ADAFRUIT_IO_USERNAME, ADAFRUIT_IO_KEY)
