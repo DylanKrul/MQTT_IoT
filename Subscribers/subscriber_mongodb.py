@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import paho.mqtt.client as mqtt
 import datetime
+import time
 from pymongo import MongoClient
 
 
@@ -38,7 +39,14 @@ collection=db.home_data
 client = mqtt.Client()
 client.on_connect = on_connect
 client.on_message = on_message
-client.connect("192.168.1.16", 1883, 60)
+connOK=False
+while(connOK == False):
+    try:
+        client.connect("192.168.1.16", 1883, 60)
+        connOK = True
+    except:
+        connOK = False
+    time.sleep(2)
 
 # Blocking loop to the Mosquitto broker
 client.loop_forever()

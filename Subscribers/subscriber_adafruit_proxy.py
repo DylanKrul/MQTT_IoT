@@ -44,16 +44,22 @@ adafruitClient = MQTTClient(ADAFRUIT_IO_USERNAME, ADAFRUIT_IO_KEY)
 
 def adafruit_disconnected(client):
     print("Disconnected from Adafruit IO")
-    client.connect()
+    adafruit_connect(client)
 
 def adafruit_connected(client):
     print("Connected to Adafruit IO")
 
+def adafruit_connect(client):
+    while(client.is_connected() == False):
+        print("Trying connect to Adafruit IO")
+        client.connect()
+        # Run loop in a separate thread
+        adafruitClient.loop_background()
+        time.sleep(2)
+
 adafruitClient.on_disconnect = adafruit_disconnected
 adafruitClient.on_connect = adafruit_connected
-adafruitClient.connect()
-# Run loop in a separate thread
-adafruitClient.loop_background()
+adafruit_connect(adafruitClient)
 
 # Blocking loop to the local Mosquitto broker
 client.loop_forever()
