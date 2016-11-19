@@ -4,6 +4,7 @@ import datetime
 import time
 from Adafruit_IO import MQTTClient
 from adafruit_credentials import ADAFRUIT_IO_USERNAME, ADAFRUIT_IO_KEY
+from mylogger import logger
 
 #
 # Subscribes to messages via a local MQTT broker
@@ -16,7 +17,7 @@ def on_connected(client, userdata, rc):
 
 def on_disconnected(client,userdata,rc):
     print("Disconnected from local MQTT broker")
-    client = mqtt.Client()
+    try_connect_to_local_broker(client)
 
 def adafruit_connected(client):
     print("Connected to Adafruit IO")
@@ -30,13 +31,14 @@ def on_message(client, userdata, msg):
     print("Publish to Adafruit feedname: " + feedname)
 
     # Initialize the client that should connect to io.adafruit.com
-    adafruitClient = MQTTClient(ADAFRUIT_IO_USERNAME, ADAFRUIT_IO_KEY)
+    adafruitClient = MQTTClient(ADAFRUIT_IO_USERNAME, ADAFRUIT_IO_KEY,service_port=1883)
     adafruitClient.on_connect = adafruit_connected
     adafruitClient.connect()
     adafruitClient.loop()
     adafruitClient.publish(feedname,msg.payload)
 
 def try_connect_to_local_broker(client):
+    print("trying to connect to local broker")
     connOK=False
     while(connOK == False):
         try:
