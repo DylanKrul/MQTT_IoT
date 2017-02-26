@@ -55,7 +55,12 @@ client = mqtt.Client()
 client.on_connect = on_connected
 client.on_disconnect = on_disconnected
 client.on_message = on_message
-try_connect_to_local_broker(client)
 
-# Blocking loop to the local Mosquitto broker
-client.loop_forever()
+while True:
+    # Blocking loop to the local Mosquitto broker
+    try:  
+        try_connect_to_local_broker(client)
+        client.loop_forever()
+    except:
+        print("Exception from client.loop_forever")
+    time.sleep(20)
