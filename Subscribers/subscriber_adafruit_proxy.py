@@ -13,7 +13,16 @@ from mylogger import logger
 
 def on_connected(client, userdata, rc):
     print("Connected to local MQTT broker with result code "+str(rc))
-    client.subscribe("Home/#")
+    client.subscribe("Home/Outdoor/Temperature")
+    client.subscribe("Home/Outdoor/Humidity")
+    client.subscribe("Home/Garage/Temperature")
+    client.subscribe("Home/Garage/Humidity")
+    client.subscribe("Home/GroundFloor/Temperature")
+    client.subscribe("Home/GroundFloor/Humidity")
+    client.subscribe("Home/TopFloor/Temperature")
+    client.subscribe("Home/TopFloor/Pressure")
+    client.subscribe("Home/RPI3/Temp")
+    client.subscribe("Home/FrontDoor/Status")
 
 def on_disconnected(client,userdata,rc):
     print("Disconnected from local MQTT broker")
