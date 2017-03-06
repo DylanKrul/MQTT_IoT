@@ -2,15 +2,15 @@
 import paho.mqtt.client as mqtt
 import datetime
 import time
-from pymongo import MongoClient
-
+from influxdb import InfluxDBClient
 
 def on_connect(client, userdata, rc):
     print("Connected with result code "+str(rc))
     client.subscribe("Home/#")
 
 def on_message(client, userdata, msg):
-    receiveTime=datetime.datetime.now()
+    # Use utc as timestamp
+    receiveTime=datetime.datetime.utcnow()
     message=msg.payload.decode("utf-8")
     isfloatValue=False
     try:
@@ -22,18 +22,22 @@ def on_message(client, userdata, msg):
 
     if isfloatValue:
         print(str(receiveTime) + ": " + msg.topic + " " + str(val))
-        post={"time":receiveTime,"topic":msg.topic,"value":val}
-    else:
-        print(str(receiveTime) + ": " + msg.topic + " " + message)
-        post={"time":receiveTime,"topic":msg.topic,"value":message}
 
-    collection.insert_one(post)
+        json_body = [
+            {
+                "measurement": msg.topic,
+                "time": receiveTime,
+                "fields": {
+                    "value": val
+                }
+            }
+        ]
+
+        dbclient.write_points(json_body)
 
 
-# Set up client for MongoDB
-mongoClient=MongoClient()
-db=mongoClient.SensorData
-collection=db.home_data
+# Set up client for InfluxDB
+dbclient = InfluxDBClient('192.168.1.16', 8086, 'root', 'root', 'sensordata')
 
 # Initialize the client that should connect to the Mosquitto broker
 client = mqtt.Client()

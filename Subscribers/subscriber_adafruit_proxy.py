@@ -3,33 +3,73 @@ import paho.mqtt.client as mqtt
 import datetime
 import time
 from Adafruit_IO import MQTTClient
+from adafruit_credentials import ADAFRUIT_IO_USERNAME, ADAFRUIT_IO_KEY
+from mylogger import logger
 
-# Set to your Adafruit IO key and username
-ADAFRUIT_IO_KEY      = 'XXX'
-ADAFRUIT_IO_USERNAME = 'XXX'
+#
+# Subscribes to messages via a local MQTT broker
+# and forwards them to a cloud service (Adafruit IO)
+#
 
-def on_connect(client, userdata, rc):
-    print("Connected with result code "+str(rc))
-    client.subscribe("Home/#")
+def on_connected(client, userdata, rc):
+    print("Connected to local MQTT broker with result code "+str(rc))
+    client.subscribe("Home/Outdoor/Temperature")
+    client.subscribe("Home/Outdoor/Humidity")
+    client.subscribe("Home/Garage/Temperature")
+    client.subscribe("Home/Garage/Humidity")
+    client.subscribe("Home/GroundFloor/Temperature")
+    client.subscribe("Home/GroundFloor/Humidity")
+    client.subscribe("Home/TopFloor/Temperature")
+    client.subscribe("Home/TopFloor/Pressure")
+    client.subscribe("Home/RPI3/Temp")
+    client.subscribe("Home/FrontDoor/Status")
+
+def on_disconnected(client,userdata,rc):
+    print("Disconnected from local MQTT broker")
+    try_connect_to_local_broker(client)
+
+def adafruit_connected(client):
+    print("Connected to Adafruit IO")
 
 def on_message(client, userdata, msg):
-    print(str(datetime.datetime.now()) + ": " + msg.topic + " " + str(msg.payload))
-    # Send the data to Adafruit IO. Replace topic with a feed name
+    print(str(datetime.datetime.now()) + ": " + msg.topic + " " + str(msg.payload))    
+    #
+    # Forward the data to Adafruit IO. Replace topic with a valid feed name
+    #
     feedname=msg.topic.replace("/","_")
     print("Publish to Adafruit feedname: " + feedname)
+
+    # Initialize the client that should connect to io.adafruit.com
+    adafruitClient = MQTTClient(ADAFRUIT_IO_USERNAME, ADAFRUIT_IO_KEY,service_port=1883)
+    adafruitClient.on_connect = adafruit_connected
+    adafruitClient.connect()
+    adafruitClient.loop()
     adafruitClient.publish(feedname,msg.payload)
 
-# Initialize the client that should connect to the Mosquitto broker
+def try_connect_to_local_broker(client):
+    print("trying to connect to local broker")
+    connOK=False
+    while(connOK == False):
+        try:
+            client.connect("192.168.1.16", 1883, 60)
+            connOK = True
+        except:
+            connOK = False
+        time.sleep(2)
+
+#
+# Initialize the client that should connect to the local MQTT broker
+#
 client = mqtt.Client()
-client.on_connect = on_connect
+client.on_connect = on_connected
+client.on_disconnect = on_disconnected
 client.on_message = on_message
-client.connect("192.168.1.16", 1883, 60)
 
-# Initialize the client that should connect to io.adafruit.com
-adafruitClient = MQTTClient(ADAFRUIT_IO_USERNAME, ADAFRUIT_IO_KEY)
-adafruitClient.connect()
-# Run loop in a separate thread
-adafruitClient.loop_background()
-
-# Blocking loop to the Mosquitto broker
-client.loop_forever()
+while True:
+    # Blocking loop to the local Mosquitto broker
+    try:  
+        try_connect_to_local_broker(client)
+        client.loop_forever()
+    except:
+        print("Exception from client.loop_forever")
+    time.sleep(20)
