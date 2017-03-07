@@ -10,12 +10,11 @@
 #include "RCSwitch.h"
 #include <Narcoleptic.h>
 
-#define CLIENT_NAME "TopFloorClient"
 #define TX_PIN 10                     // PWM output pin to use for transmission
 
 //
 // Sensor setup
-// The BMP085 module measure ait pressure and temperature and operates via i2C
+// The BMP085 module measures air pressure and temperature and operates via i2C
 //
 Adafruit_BMP085 bmp; // pin 4, SDA (data), pin 5, SDC (clock)
 
@@ -26,7 +25,6 @@ Adafruit_BMP085 bmp; // pin 4, SDA (data), pin 5, SDC (clock)
 #define BMP_PRESSURE_ID     2
 RCSwitch transmitter = RCSwitch();
 
-#define SLEEP_SECONDS 60*15
 void setup() 
 {
   Serial.begin(9600);
@@ -61,8 +59,12 @@ void loop()
   dataToSend = Code32BitsToSend(BMP_PRESSURE_ID,seqNum,pressureInt);
   TransmitWithRepeat(dataToSend);
 
-  Narcoleptic.delay(SLEEP_SECONDS*1000);
-
+  for (int i=0; i< 100; i++)
+  {
+    // Max narcoleptic delay is 8s
+    Narcoleptic.delay(8000);
+  }
+  
   seqNum++;
   if (seqNum > 15)
   {
