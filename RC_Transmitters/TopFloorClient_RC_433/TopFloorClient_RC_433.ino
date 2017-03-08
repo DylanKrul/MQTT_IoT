@@ -1,6 +1,6 @@
 //
-// An Arduino sketch for an IoT node that sends sensor values vith 433 MHz radio
-// The RCSwitch library is used for the transmitions
+// An Arduino sketch for an IoT node that sends sensor values via 433 MHz radio
+// The Sensor433/RCSwitch library is used for the transmissions
 // The Narcopleptic library is used for power save during delay
 // Sensor values are fetched from an BPM180/085 sensor via i2C
 // 
@@ -19,7 +19,6 @@ Adafruit_BMP085 bmp; // pin 4, SDA (data), pin 5, SDC (clock)
 //
 // Data transmission setup
 //
-#define CLIENT_NAME "TopFloorClient"
 #define TX_PIN 12                     // PWM output pin to use for transmission
 #define TOPFLOOR_TEMP_ID    1
 #define BMP_PRESSURE_ID     2
