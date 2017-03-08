@@ -12,7 +12,7 @@
 
 //
 // Sensor setup
-// The BMP085 module measure ait pressure and temperature and operates via i2C
+// The BMP085 module measures air pressure and temperature and operates via i2C
 //
 Adafruit_BMP085 bmp; // pin 4, SDA (data), pin 5, SDC (clock)
 
@@ -39,7 +39,6 @@ void loop()
   Serial.print("Temperature = ");
   Serial.print(temp);
   Serial.println(" *C");
-
   transmitter.sendFloat(TOPFLOOR_TEMP_ID, temp);
 
   float pressure = bmp.readPressure();
@@ -51,7 +50,7 @@ void loop()
   Serial.print("Pressure Int = ");
   Serial.println(pressureInt);
   transmitter.sendWord(BMP_PRESSURE_ID, pressureInt);
-  
+
   for (int i=0; i< 100; i++)
   {
     // Max narcoleptic delay is 8s
