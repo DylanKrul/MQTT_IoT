@@ -26,7 +26,7 @@ def publish_message(topic, message):
 
 if __name__ == '__main__':
     if len(sys.argv) != 2:
-        print("Specify a computer name as argument to " + __name__)
+        print("Specify a computer name as argument to " + __file__)
         sys.exit(2)
 
     computer_name = sys.argv[1]
