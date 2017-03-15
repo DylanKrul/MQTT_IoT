@@ -3,6 +3,7 @@ import paho.mqtt.publish as publish
 from subprocess import check_output
 from re import findall
 import psutil
+import sys
 
 def get_temp():
     temp = check_output(["vcgencmd","measure_temp"]).decode("UTF-8")
@@ -23,7 +24,15 @@ def publish_message(topic, message):
 
     publish.single(topic, message, hostname="192.168.1.16")
 
-publish_message("Home/RPI3/Temp", get_temp())
-publish_message("Home/RPI3/DiskUsagePercent", get_disk_usage())
-publish_message("Home/RPI3/MemoryUsagePercent", get_memory_usage())
-publish_message("Home/RPI3/CpuUsagePercent", get_cpu_usage())
+if __name__ == '__main__':
+    if len(sys.argv) != 2:
+        print("Specify a computer name as argument to " + __name__)
+        sys.exit(2)
+
+    computer_name = sys.argv[1]
+    print("Doing measurements for: " + computer_name)
+
+    publish_message("Home/" + computer_name + "/Temp", get_temp())
+    publish_message("Home/" + computer_name + "/DiskUsagePercent", get_disk_usage())
+    publish_message("Home/" + computer_name + "/MemoryUsagePercent", get_memory_usage())
+    publish_message("Home/" + computer_name + "/CpuUsagePercent", get_cpu_usage())
