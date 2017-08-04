@@ -60,7 +60,7 @@ void loop()
     publishFloatValue(h_indoor,"Home/GroundFloor/Humidity");
     publishFloatValue(t_indoor,"Home/GroundFloor/Temperature");
 
-    int moistureWarning = digitalRead(14);
+/*    int moistureWarning = digitalRead(14);
     if (moistureWarning == 1)
     {
       mqttClient.publish("Home/GroundFloor/PlantStatus", "Please water the plant!");
@@ -68,7 +68,7 @@ void loop()
     else
     {
       mqttClient.publish("Home/GroundFloor/PlantStatus", "Plant is ok!");
-    }
+    }*/
   }
 
 }

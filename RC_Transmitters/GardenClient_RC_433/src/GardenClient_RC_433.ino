@@ -1,3 +1,5 @@
+#include <Arduino.h>
+
 //
 // An Arduino sketch for an IoT node that sends sensor values via 433 MHz radio
 // The Sensor433/RCSwitch library is used for the transmissions
