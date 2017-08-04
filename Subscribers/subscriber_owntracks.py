@@ -2,41 +2,44 @@
 import paho.mqtt.client as mqtt
 import datetime
 import time
+import json
 from influxdb import InfluxDBClient
 
 def on_connect(client, userdata, rc):
     print("Connected with result code "+str(rc))
-    client.subscribe("Home/#")
+    client.subscribe("owntracks/#")
 
 def on_message(client, userdata, msg):
-    print("Received a message on topic: " + msg.topic)
-    # Use utc as timestamp
-    receiveTime=datetime.datetime.utcnow()
     message=msg.payload.decode("utf-8")
-    isfloatValue=False
     try:
-        # Convert the string to a float so that it is stored as a number and not a string in the database
-        val = float(message)
-        isfloatValue=True
-    except:
-        print("Could not convert " + message + " to a float value")
-        isfloatValue=False
-
-    if isfloatValue:
-        print(str(receiveTime) + ": " + msg.topic + " " + str(val))
+        print(message)
+        j = json.loads(message)
+        tst = j["tst"]
+        lon = j["lon"]
+        lat = j["lat"]
+        tid = j["tid"]
+        print(tst)
+        print(lon)
+        print(lat)
+        print(tid)
 
         json_body = [
             {
-                "measurement": msg.topic,
-                "time": receiveTime,
+                "measurement": tid + "_pos",
+#                "time": tst,
                 "fields": {
-                    "value": val
+                    "value": lon,
+                    "lat": lat
                 }
             }
         ]
 
         dbclient.write_points(json_body)
-        print("Finished writing to InfluxDB")
+        print("Stored ok!")
+
+    except:
+        print("Could not parse and save message")
+        isfloatValue=False
 
 
 # Set up client for InfluxDB
