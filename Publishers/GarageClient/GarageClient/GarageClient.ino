@@ -5,7 +5,7 @@
 // to an MQTT broker (I have used a local Mosquitto running on a Raspberry Pi)
 // This example uses the PubSub client library (https://github.com/knolleary/pubsubclient)
 // Install it in the Arduino IDE before compiling the sketch
-// Sensor values are fetched from an indoor DHT22 sensor
+// Sensor values are fetched from an indoor DHT22 sensor and an outdoor DHT21 sensor
 
 
 #include <ESP8266WiFi.h>
@@ -27,7 +27,9 @@ PubSubClient mqttClient(BROKER_IP,BROKER_PORT,wifiClient);
 #define DHTPIN_INDOOR 5
 #define DHTTYPE_INDOOR DHT22
 DHT dht_indoor(DHTPIN_INDOOR, DHTTYPE_INDOOR);
-
+#define DHTPIN_OUTDOOR 4
+#define DHTTYPE_OUTDOOR DHT21
+DHT dht_outdoor(DHTPIN_OUTDOOR, DHTTYPE_OUTDOOR);
 
 void setup()
 {
@@ -36,6 +38,7 @@ void setup()
   WiFi.begin(WLAN_SSID, WLAN_PASS);
 
   dht_indoor.begin();
+  dht_outdoor.begin();
 }
 
 #define SECONDS_BETWEEN_MEASUREMENTS 600
@@ -58,9 +61,15 @@ void loop()
 
     float h_indoor = dht_indoor.readHumidity();
     float t_indoor = dht_indoor.readTemperature();
+    float h_outdoor = dht_outdoor.readHumidity();
+    float t_outdoor = dht_outdoor.readTemperature();
+    Serial.println(h_outdoor);
+    Serial.println(t_outdoor);
 
     publishFloatValue(h_indoor,"Home/Garage/Humidity");
     publishFloatValue(t_indoor,"Home/Garage/Temperature");
+    publishFloatValue(h_outdoor,"Home/Outdoor/Humidity");
+    publishFloatValue(t_outdoor,"Home/Outdoor/Temperature");
   }
 }
 
