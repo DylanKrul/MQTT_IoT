@@ -41,13 +41,14 @@ void loop()
   transmitter.sendFloat(TOPFLOOR_TEMP_ID, temp);
 
   float pressure = bmp.readPressure();
-  Serial.print("Pressure = ");
+  Serial.print("Pressure (float) = ");
   Serial.print(pressure);
   Serial.println(" Pa");
 
   unsigned int pressureInt = pressure/100;
-  Serial.print("Pressure Int = ");
-  Serial.println(pressureInt);
+  Serial.print("Pressure (int) = ");
+  Serial.print(pressureInt);
+  Serial.println(" hPa");
   transmitter.sendWord(BMP_PRESSURE_ID, pressureInt);
 
   for (int i=0; i< 100; i++)
