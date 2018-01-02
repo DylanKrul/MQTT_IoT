@@ -9,6 +9,7 @@ def on_connect(client, userdata, flags, rc):
     client.subscribe("Home/#")
 
 def on_message(client, userdata, msg):
+    print("Received a message on topic: " + msg.topic)
     # Use utc as timestamp
     receiveTime=datetime.datetime.utcnow()
     message=msg.payload.decode("utf-8")
@@ -18,6 +19,7 @@ def on_message(client, userdata, msg):
         val = float(message)
         isfloatValue=True
     except:
+        print("Could not convert " + message + " to a float value")
         isfloatValue=False
 
     if isfloatValue:
@@ -34,6 +36,7 @@ def on_message(client, userdata, msg):
         ]
 
         dbclient.write_points(json_body)
+        print("Finished writing to InfluxDB")
 
 
 # Set up client for InfluxDB
