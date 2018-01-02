@@ -11,12 +11,11 @@ from mylogger import logger
 # and forwards them to a cloud service (Adafruit IO)
 #
 
-def on_connected(client, userdata, rc):
+def on_connected(client, userdata, flags, rc):
     print("Connected to local MQTT broker with result code "+str(rc))
-    client.subscribe("Home/Outdoor/Temperature")
-    client.subscribe("Home/Outdoor/Humidity")
-    client.subscribe("Home/Laundry/Temperature")
-    client.subscribe("Home/Laundry/Humidity")
+    client.subscribe("Home/Garage/Temperature")
+    client.subscribe("Home/Garage/Humidity")
+    client.subscribe("Home/Garden/Temperature")
     client.subscribe("Home/GroundFloor/Temperature")
     client.subscribe("Home/GroundFloor/Humidity")
     client.subscribe("Home/TopFloor/Temperature")

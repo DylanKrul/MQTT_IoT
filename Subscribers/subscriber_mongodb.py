@@ -5,7 +5,7 @@ import time
 from pymongo import MongoClient
 
 
-def on_connect(client, userdata, rc):
+def on_connect(client, userdata, flags, rc):
     print("Connected with result code "+str(rc))
     client.subscribe("Home/#")
 
