@@ -8,7 +8,7 @@
 // Sensor values are fetched from an indoor DHT22 sensor and an outdoor DHT21 sensor
 
 
-#include <ESP8266WiFi.h>
+//#include <ESP8266WiFi.h>
 #include <PubSubClient.h>
 #include "WIFI_and_broker_parameters.h"
 
