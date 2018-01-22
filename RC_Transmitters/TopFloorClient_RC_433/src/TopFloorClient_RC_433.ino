@@ -1,9 +1,9 @@
 //
-// An Arduino sketch for an IoT node that sends sensor values via 433 MHz radio
+// An Arduino sketch for an IoT node (Arduino Mini) that sends sensor values via 433 MHz radio
 // The Sensor433/RCSwitch library is used for the transmissions
 // The Narcopleptic library is used for power save during delay
 // Sensor values are fetched from an BPM180/085 sensor via i2C
-// 
+//
 
 #include <Wire.h>
 #include <Adafruit_BMP085.h>
@@ -24,17 +24,17 @@ Adafruit_BMP085 bmp; // pin 4, SDA (data), pin 5, SDC (clock)
 #define BMP_PRESSURE_ID     2
 Sensor433::Transmitter transmitter = Sensor433::Transmitter(TX_PIN);
 
-void setup() 
+void setup()
 {
   Serial.begin(9600);
-  
+
   bmp.begin();
 }
 
-void loop() 
+void loop()
 {
   float temp = bmp.readTemperature();
-  
+
   Serial.print("Temperature = ");
   Serial.print(temp);
   Serial.println(" *C");
@@ -45,11 +45,14 @@ void loop()
   Serial.print(pressure);
   Serial.println(" Pa");
 
-  unsigned int pressureInt = pressure/100;
-  Serial.print("Pressure (int) = ");
-  Serial.print(pressureInt);
+  // Convert to hPha and use an offset pressure
+  // of 900hPa so that the value will
+  // fit as a float value in the Sensor433 protocol
+  float offsetPressure = pressure/100.0 - 900.0;
+  Serial.print("Pressure (offset) = ");
+  Serial.print(offsetPressure);
   Serial.println(" hPa");
-  transmitter.sendWord(BMP_PRESSURE_ID, pressureInt);
+  transmitter.sendFloat(BMP_PRESSURE_ID, offsetPressure);
 
   for (int i=0; i< 100; i++)
   {
@@ -57,4 +60,3 @@ void loop()
     Narcoleptic.delay(8000);
   }
 }
-
